@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 0.0f;
     public float turnSpeed = 0.0f;
     public float minLookInput = 0.8f;
-
+    public float jumpPower = 1.0f;
+    public bool onGround = false;
+        
     Rigidbody body;
     Vector2 moveInputDirection;
     Vector2 lookInputDirection;
@@ -27,7 +29,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.up = Vector3.up;
     }
 
     private void FixedUpdate()
@@ -51,5 +53,29 @@ public class PlayerController : MonoBehaviour
     void OnLook(InputValue value)
     {
         lookInputDirection = value.Get<Vector2>();
+    }
+
+    void OnJump()
+    {
+        if (onGround == true)
+        {
+            body.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "ground")
+        {
+            onGround = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "ground")
+        {
+            onGround = false;
+        }
     }
 }
