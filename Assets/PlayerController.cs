@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.up = Vector3.up;
+
     }
 
     private void FixedUpdate()
@@ -43,6 +43,12 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(lookDirection, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
         }
+    }
+
+    private void LateUpdate()
+    {
+        body.angularVelocity = Vector3.zero;
+        transform.eulerAngles = new Vector3(0.0f, transform.eulerAngles.y, 0.0f);
     }
 
     void OnMove(InputValue value)

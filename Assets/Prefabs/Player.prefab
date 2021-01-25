@@ -145,7 +145,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &3991373415532724779
 MonoBehaviour:
@@ -173,7 +173,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -192,6 +192,8 @@ MonoBehaviour:
   moveSpeed: 500
   turnSpeed: 90
   minLookInput: 0.8
+  jumpPower: 1
+  onGround: 0
 --- !u!1 &3991373415882291058
 GameObject:
   m_ObjectHideFlags: 0
