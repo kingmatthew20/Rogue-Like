@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float turnSpeed = 0.0f;
     public float minLookInput = 0.8f;
     public float jumpPower = 1.0f;
-    public float dashSpeed = 10.0f;
+    public float dashSpeed = 0.0f;
     public bool onGround = false;
         
     Rigidbody body;
@@ -92,6 +92,6 @@ public class PlayerController : MonoBehaviour
     void OnDash()
     {
         Vector3 dashDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
-        body.AddForce(dashDirection * moveSpeed * dashSpeed, ForceMode.Impulse);
+        body.velocity = dashDirection * dashSpeed;
     }
 }
