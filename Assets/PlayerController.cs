@@ -34,8 +34,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 moveDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
-        body.AddForce(moveDirection * moveSpeed * Time.fixedDeltaTime);
+        if (onGround)
+        {
+            Vector3 moveDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
+            body.AddForce(moveDirection * moveSpeed * Time.fixedDeltaTime);
+        }
 
         if (lookInputDirection.magnitude >= minLookInput)
         {
