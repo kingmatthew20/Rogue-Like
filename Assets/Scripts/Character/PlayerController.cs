@@ -98,6 +98,6 @@ public class PlayerController : MonoBehaviour
 
     void OnFire()
     {
-        pistol.GetComponent<Gun>().Shoot();
+        pistol.GetComponent<Gun>().Shoot(transform.forward);
     }
 }

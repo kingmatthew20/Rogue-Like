@@ -6,21 +6,23 @@ using UnityEngine.InputSystem;
 public class Gun : MonoBehaviour
 {
     public float damage = 5.0f;
-    public GameObject bullet;
-    
+    public Transform bulletPrefab;
+    public Transform bulletTrans;
+
+    Vector3 gunPos;
     // Update is called once per frame
     void Update()
     {
         
     }
 
-    public void Shoot()  
+    public void Shoot(Vector3 shootDir)
     {
-        {
-            //Target target 
-            //target.TakeDamage(damage);
-        }
 
+        Transform bullletTransform = Instantiate(bulletPrefab, bulletTrans.position, Quaternion.identity);
+        bullletTransform.forward = shootDir;
+        //Vector3 bulletDir = (shootDir - gunPos).normalized;
+        bullletTransform.GetComponent<Bullet>().Setup();
 
     }
 
