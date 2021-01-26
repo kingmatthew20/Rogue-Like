@@ -8,14 +8,26 @@ public class Bullet : MonoBehaviour
     public float moveSpeed = 10.0f;
     public Vector3 bulletDir;
 
+    float bulletDmg;
     Rigidbody body;
 
-    public void Setup()
+    public void Setup(float bulletDmg)
     {
+        this.bulletDmg = bulletDmg;
 
         body = GetComponent<Rigidbody>();
         body.velocity = transform.forward * moveSpeed;
         Destroy(gameObject, time);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Target target = other.GetComponent<Target>();
+
+        if(target != null)
+        {
+            target.TakeDamage(bulletDmg);
+            Destroy(gameObject);
+        }
     }
 
     private void Update()

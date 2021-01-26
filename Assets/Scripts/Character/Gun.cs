@@ -21,8 +21,8 @@ public class Gun : MonoBehaviour
 
         Transform bullletTransform = Instantiate(bulletPrefab, bulletTrans.position, Quaternion.identity);
         bullletTransform.forward = shootDir;
-        //Vector3 bulletDir = (shootDir - gunPos).normalized;
-        bullletTransform.GetComponent<Bullet>().Setup();
+
+        bullletTransform.GetComponent<Bullet>().Setup(damage);
 
     }
 
