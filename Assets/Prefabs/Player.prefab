@@ -193,6 +193,7 @@ MonoBehaviour:
   turnSpeed: 90
   minLookInput: 0.8
   jumpPower: 5
+  dashSpeed: 0
   onGround: 0
 --- !u!1 &3991373415882291058
 GameObject:
