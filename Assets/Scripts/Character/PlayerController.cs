@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 0.0f;
     public bool onGround = false;
     public GameObject pistol;
+    public GameObject rifle;
 
     Rigidbody body;
     Vector2 moveInputDirection;
@@ -98,6 +99,13 @@ public class PlayerController : MonoBehaviour
 
     void OnFire()
     {
-        pistol.GetComponent<Gun>().Shoot(transform.forward);
+        if (pistol != null)
+        {
+            pistol.GetComponent<Gun>().Shoot(transform.forward);
+        }
+        if (rifle != null)
+        {
+            rifle.GetComponent<LaserGun>().LaserShoot(transform.forward);
+        }
     }
 }
