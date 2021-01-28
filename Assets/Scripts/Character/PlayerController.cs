@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
     Rigidbody body;
     Vector2 moveInputDirection;
     Vector2 lookInputDirection;
-    Controls.PlayerActions controls;
+    Controls controls;
 
     private void Awake()
     {
@@ -27,9 +27,9 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
     // Start is called before the first frame update
     void Start()
     {
-        controls = new Controls.PlayerActions();
-        controls.Enable();
-        controls.SetCallbacks(this);
+        controls = new Controls();
+        controls.Player.SetCallbacks(this);
+        controls.Player.Enable();
     }
 
     // Update is called once per frame
@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInputDirection = context.ReadValue<Vector2>();
-        throw new System.NotImplementedException();
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -78,14 +77,12 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
         {
             body.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
-        throw new System.NotImplementedException();
     }
 
     public void OnDash(InputAction.CallbackContext context)
     {
         Vector3 dashDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
         body.velocity = dashDirection * dashSpeed;
-        throw new System.NotImplementedException();
     }
 
     public void OnFire(InputAction.CallbackContext context)
@@ -98,8 +95,6 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
         {
             rifle.GetComponent<LaserGun>().LaserShoot(transform.forward);
         }
-
-        throw new System.NotImplementedException();
 
     }
 
