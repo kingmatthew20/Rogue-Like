@@ -18,6 +18,7 @@ public class LaserGun : MonoBehaviour
     {
         lineRender = laserPrefab.GetComponent<LineRenderer>();
     }
+
     // Update is called once per frame
     void Update()
     {

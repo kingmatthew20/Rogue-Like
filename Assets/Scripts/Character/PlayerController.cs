@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, Controls.IPlayerActions
 {
     public float moveSpeed = 0.0f;
     public float turnSpeed = 0.0f;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody body;
     Vector2 moveInputDirection;
     Vector2 lookInputDirection;
+    Controls.PlayerActions controls;
 
     private void Awake()
     {
@@ -26,7 +27,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        controls = new Controls.PlayerActions();
+        controls.Enable();
+        controls.SetCallbacks(this);
     }
 
     // Update is called once per frame
@@ -57,27 +60,52 @@ public class PlayerController : MonoBehaviour
         transform.eulerAngles = new Vector3(0.0f, transform.eulerAngles.y, 0.0f);
     }
 
-    void OnMove(InputValue value)
+    public void OnMove(InputAction.CallbackContext context)
     {
-        moveInputDirection = value.Get<Vector2>();
+        moveInputDirection = context.ReadValue<Vector2>();
+        throw new System.NotImplementedException();
     }
 
-    void OnLook(InputValue value)
+    public void OnLook(InputAction.CallbackContext context)
     {
-        lookInputDirection = value.Get<Vector2>();
+        lookInputDirection = context.ReadValue<Vector2>();
+        throw new System.NotImplementedException();
     }
 
-    void OnJump()
+    public void OnJump(InputAction.CallbackContext context)
     {
         if (onGround == true)
         {
             body.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
+        throw new System.NotImplementedException();
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        Vector3 dashDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
+        body.velocity = dashDirection * dashSpeed;
+        throw new System.NotImplementedException();
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (pistol != null)
+        {
+            pistol.GetComponent<Gun>().Shoot(transform.forward);
+        }
+        if (rifle != null)
+        {
+            rifle.GetComponent<LaserGun>().LaserShoot(transform.forward);
+        }
+
+        throw new System.NotImplementedException();
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "ground")
+        if (collision.gameObject.tag == "ground")
         {
             onGround = true;
         }
@@ -88,24 +116,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "ground")
         {
             onGround = false;
-        }
-    }
-
-    void OnDash()
-    {
-        Vector3 dashDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
-        body.velocity = dashDirection * dashSpeed;
-    }
-
-    void OnFire()
-    {
-        if (pistol != null)
-        {
-            pistol.GetComponent<Gun>().Shoot(transform.forward);
-        }
-        if (rifle != null)
-        {
-            rifle.GetComponent<LaserGun>().LaserShoot(transform.forward);
         }
     }
 }
