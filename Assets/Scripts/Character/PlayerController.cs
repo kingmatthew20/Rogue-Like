@@ -11,8 +11,10 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
     public float jumpPower = 1.0f;
     public float dashSpeed = 0.0f;
     public bool onGround = false;
-    public GameObject pistol;
-    public GameObject rifle;
+    public Transform weaponPosition;
+
+    public GameObject weaponPrefab;
+    IWeapon weapon;
 
     Rigidbody body;
     Vector2 moveInputDirection;
@@ -30,6 +32,9 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
         controls = new Controls();
         controls.Player.SetCallbacks(this);
         controls.Player.Enable();
+
+        GameObject weaponObject = Instantiate(weaponPrefab, weaponPosition);
+        weapon = weaponObject.GetComponent<IWeapon>();
     }
 
     // Update is called once per frame
@@ -87,15 +92,12 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
 
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (pistol != null)
-        {
-            pistol.GetComponent<Gun>().Shoot(transform.forward);
-        }
-        if (rifle != null)
-        {
-            rifle.GetComponent<LaserGun>().LaserShoot(transform.forward);
-        }
+        if (weapon == null) return;
 
+        if (context.phase == InputActionPhase.Started)
+            weapon.StartFire();
+        if (context.phase == InputActionPhase.Canceled)
+            weapon.EndFire();
     }
 
     private void OnCollisionEnter(Collision collision)

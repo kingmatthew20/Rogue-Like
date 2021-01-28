@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserGun : MonoBehaviour
+public class LaserGun : MonoBehaviour, IWeapon
 {
     public float damage = 10.0f;
     public float range = 50.0f;
@@ -11,8 +11,7 @@ public class LaserGun : MonoBehaviour
     public float time = 1.0f;
 
     private LineRenderer lineRender;
-    Target target;
-    bool rayHit;
+    bool firing = false;
 
     private void Start()
     {
@@ -22,18 +21,19 @@ public class LaserGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (firing)
+            LaserShoot(transform.forward);
     }
 
     public void LaserShoot(Vector3 shootDir)
     {
         RaycastHit hit;
-        rayHit = Physics.Raycast(bulletPos.position, shootDir, out hit, range);
+        bool rayHit = Physics.Raycast(bulletPos.position, shootDir, out hit, range);
         lineRender.SetPosition(0, bulletPos.position);
 
         if (rayHit)
         {
-            target = hit.collider.gameObject.GetComponent<Target>();
+            Target target = hit.collider.gameObject.GetComponent<Target>();
             target.TakeDamage(damage);
 
             lineRender.SetPosition(1, hit.point);
@@ -48,5 +48,15 @@ public class LaserGun : MonoBehaviour
             GameObject laser = Instantiate(laserPrefab, bulletPos.position, Quaternion.identity);
             Destroy(laser, time);
         }
+    }
+
+    public void StartFire()
+    {
+        firing = true;
+    }
+
+    public void EndFire()
+    {
+        firing = false;
     }
 }
