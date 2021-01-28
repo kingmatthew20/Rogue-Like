@@ -22,13 +22,13 @@ public class LaserGun : MonoBehaviour, IWeapon
     void Update()
     {
         if (firing)
-            LaserShoot(transform.forward);
+            LaserShoot();
     }
 
-    public void LaserShoot(Vector3 shootDir)
+    public void LaserShoot()
     {
         RaycastHit hit;
-        bool rayHit = Physics.Raycast(bulletPos.position, shootDir, out hit, range);
+        bool rayHit = Physics.Raycast(bulletPos.position, transform.forward, out hit, range);
         lineRender.SetPosition(0, bulletPos.position);
 
         if (rayHit)

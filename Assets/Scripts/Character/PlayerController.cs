@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, Controls.IPlayerActions
+public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 0.0f;
     public float turnSpeed = 0.0f;
@@ -13,13 +12,12 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
     public bool onGround = false;
     public Transform weaponPosition;
 
-    public GameObject weaponPrefab;
+    //public GameObject weaponPrefab;
     IWeapon weapon;
 
     Rigidbody body;
-    Vector2 moveInputDirection;
-    Vector2 lookInputDirection;
-    Controls controls;
+    public Vector2 moveInputDirection;
+    public Vector2 lookInputDirection;
 
     private void Awake()
     {
@@ -29,12 +27,8 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
     // Start is called before the first frame update
     void Start()
     {
-        controls = new Controls();
-        controls.Player.SetCallbacks(this);
-        controls.Player.Enable();
-
-        GameObject weaponObject = Instantiate(weaponPrefab, weaponPosition);
-        weapon = weaponObject.GetComponent<IWeapon>();
+        //GameObject weaponObject = Instantiate(weaponPrefab, weaponPosition);
+        //weapon = weaponObject.GetComponent<IWeapon>();
     }
 
     // Update is called once per frame
@@ -58,48 +52,12 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
         }
     }
-
+    
     private void LateUpdate()
     {
         body.angularVelocity = Vector3.zero;
         transform.eulerAngles = new Vector3(0.0f, transform.eulerAngles.y, 0.0f);
     }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInputDirection = context.ReadValue<Vector2>();
-        throw new System.NotImplementedException();
-    }
-
-    public void OnLook(InputAction.CallbackContext context)
-    {
-        lookInputDirection = context.ReadValue<Vector2>();
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (onGround == true)
-        {
-            body.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-        }
-    }
-
-    public void OnDash(InputAction.CallbackContext context)
-    {
-        Vector3 dashDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
-        body.velocity = dashDirection * dashSpeed;
-    }
-
-    public void OnFire(InputAction.CallbackContext context)
-    {
-        if (weapon == null) return;
-
-        if (context.phase == InputActionPhase.Started)
-            weapon.StartFire();
-        if (context.phase == InputActionPhase.Canceled)
-            weapon.EndFire();
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "ground")
@@ -114,5 +72,33 @@ public class PlayerController : MonoBehaviour, Controls.IPlayerActions
         {
             onGround = false;
         }
+    }
+
+    public void Jump()
+    {
+        if (onGround == true)
+        {
+            body.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        }
+    }
+    public void Dash()
+    {
+        Vector3 dashDirection = new Vector3(moveInputDirection.x, 0.0f, moveInputDirection.y);
+        body.velocity = dashDirection * dashSpeed;
+    }
+    public void StartFire()
+    {
+        if (weapon == null) return;
+            weapon.StartFire();
+    }
+    public void EndFire()
+    {
+        if (weapon == null) return;
+            weapon.EndFire();
+    }
+    public void AddWeapon(GameObject wpn)
+    {
+        GameObject playerWeapon = Instantiate(wpn, weaponPosition);
+        weapon = playerWeapon.GetComponent<IWeapon>();
     }
 }
