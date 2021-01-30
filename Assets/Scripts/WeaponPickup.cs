@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class WeaponPickup : MonoBehaviour
 {
-    public GameObject weaponPrefab;
+
     PlayerController playerController;
+    Pickup pickup;
+    GameObject weaponPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
     private void Awake()
     {
+        pickup = GameObject.FindGameObjectWithTag("GameController").GetComponent<Pickup>();
+        weaponPrefab = pickup.Weapons[1];
         GameObject weaponObject = Instantiate(weaponPrefab, transform);
     }
 

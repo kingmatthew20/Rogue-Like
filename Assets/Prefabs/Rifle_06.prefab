@@ -329,6 +329,7 @@ MonoBehaviour:
   bulletPos: {fileID: 6069440338983210347}
   laserPrefab: {fileID: 1418568139234217494, guid: f35f632b2387f2a468975331f2306516, type: 3}
   time: 0.2
+  fireRate: 10
 --- !u!1 &8467424396571377224
 GameObject:
   m_ObjectHideFlags: 0

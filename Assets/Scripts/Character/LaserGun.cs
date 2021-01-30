@@ -9,10 +9,12 @@ public class LaserGun : MonoBehaviour, IWeapon
     public Transform bulletPos;
     public GameObject laserPrefab;
     public float time = 1.0f;
+    public float fireRate = 10.0f;
 
     private LineRenderer lineRender;
     bool firing = false;
-
+    float timeToNextFire = 0f;
+    
     private void Start()
     {
         lineRender = laserPrefab.GetComponent<LineRenderer>();
@@ -21,8 +23,14 @@ public class LaserGun : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        if (firing)
+
+        if (firing && Time.time >= timeToNextFire)
+        {
+            timeToNextFire = Time.time + 1f/fireRate;
             LaserShoot();
+        }
+
+
     }
 
     public void LaserShoot()
